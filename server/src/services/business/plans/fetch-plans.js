@@ -1,9 +1,13 @@
-import createdAt from "../utils/assign/created-at.js";
-import updatedAt from "../utils/assign/updated-at.js";
 import plans from "./tables/plans.js";
 
-async function fetchPlans(currentUserId, transaction) {
+async function fetchPlans(currentUserId, userId, transaction) {
     
+    
+    const purchase = await plans(transaction)
+		.where("userId", userId)
+		.whereNull("deletedAt");
+
+	return Object.assign(purchase);
 }
 
 export default fetchPlans;
