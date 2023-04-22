@@ -1,13 +1,17 @@
 import Router from "@koa/router";
-import auth from "./auth.js";
-import web from "./web.js";
 
-const routes = new Router();
+import { checkHealth } from "../controllers/helth-check-controller.js";
+import { storeCurrentUserAction, AuthCurrentUserAction } from "../controllers/user-controller.js";
+import errorHandlingMiddleware from "../middlewares/error-handling-middleware.js";
+import knexTransactionMiddleware from "../middlewares/knex-transaction-middleware.js";
 
-routes.use(web.routes());
-routes.use(auth.allowedMethods());
 
-routes.use(auth.routes());
-routes.use(auth.allowedMethods());
+const web = new Router();
 
-export default routes;
+web.use(errorHandlingMiddleware());
+web.use(knexTransactionMiddleware());
+
+web.get("/health-check", checkHealth);
+web.post("/users/auth", AuthCurrentUserAction);
+
+export default web;
