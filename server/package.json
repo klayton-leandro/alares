@@ -5,6 +5,9 @@
   "main": "./src/web/index.js",
   "type": "module",
   "scripts": {
+    "develop": "DEBUG=alares:* nodemon -r 'dotenv/config' ./src/web/index.js",
+    "start": "node -r 'dotenv/config' ./src/web/index.js",
+    "dev": "nodemon 'dotenv/config' ./src/web/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
