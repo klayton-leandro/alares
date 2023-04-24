@@ -1,5 +1,5 @@
 import { api } from 'libs'
-import { toast, mountQueryParams } from 'utils'
+import { toast, mountQueryParams, normalizeText, normalizePriceText } from 'utils'
 
 import { getOptions } from 'utils/api'
 
@@ -137,6 +137,15 @@ export const trashPlan = async (id: number) => {
     }
 }
 
+
+export const trashPurchase = async (id: number) => {
+    try {
+        await api.delete(`purchases/${id}`)
+    }catch(error){
+        toast.messsage('500')
+    }
+}
+
 export const fetchUser = async (id: number) => {    
     console.log("id", id)
     try{
@@ -221,6 +230,25 @@ export const alterUserStatus = async (request: AlterUserStatusRequest) => {
 export const storeAdminUser = async (values: any) => {
     try{
         const { data } = await api.post('/users/create', values)
+
+        return data
+    }catch(error: any){
+        if(error?.response?.status !== 500){
+            throw error.response.data
+       }else{
+            toast.messsage('500')
+       }
+    }
+}
+
+
+export const storePurchase = async (values: any) => {
+    values = {
+        ...values,
+        price: normalizePriceText(values.price)
+    }
+    try{
+        const { data } = await api.post('/purchase/create', values)
 
         return data
     }catch(error: any){

@@ -8,8 +8,8 @@ import {
     Table as T, 
     Text,
     RemoveModal,
-    Button,
-    Select } from 'components'
+    Button
+ } from 'components'
 
 import { 
     Container, 
@@ -23,7 +23,7 @@ import { usersKey } from 'consts/queries'
 
 import { 
     fetchPurchases,
-    trashUser
+    trashPurchase,
  } from 'services/users'
 
 import { formatCurrency, toast } from 'utils'
@@ -85,14 +85,14 @@ export function Table(props: Props) {
     
     const { removePaginated } = useRemoveItem([usersKey, itensPorPagina, pagina])
 
-    const { mutate, isLoading: isLoadingMutation } = useMutation(trashUser, {
+    const { mutate, isLoading: isLoadingMutation } = useMutation(trashPurchase, {
         onMutate(id){
             const result = removePaginated(id)
             return { result }
         },
         onSuccess(){
             setIsRemoveModalOpen(false)
-            toast.messsage('200', 'Usuário removido com sucesso!')
+            toast.messsage('200', 'Pedido removido com sucesso!')
         },
         onSettled(){
             queryClient.invalidateQueries([usersKey, itensPorPagina, pagina])  

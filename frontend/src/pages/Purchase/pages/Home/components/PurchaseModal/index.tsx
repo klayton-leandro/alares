@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-query'
 import { useForm } from "react-hook-form"
@@ -25,6 +25,7 @@ import {
     fetchPlans,
     fetchPurchase,
     storeAdminUser, 
+    storePurchase, 
     updatePurchase} from 'services/users'
 import { forms } from 'consts/errors'
 import { toast, displayError, formatCurrency } from 'utils'
@@ -55,23 +56,19 @@ export function PurchaseModal () {
     const { data: purchaseUser,  isFetching: isLoadingUser } = useQuery([userKeY, state.modals.purchase.id], () => fetchPurchase(state.modals.purchase.id as any))  
 
 
-    const { data: plansOptions,  isFetching: isLoadingPlans } = useQuery([userKeY, state.modals.purchase.id], () => fetchAllPlans, {
-        async onSuccess(data: Array<any>){       
-            console.log("data", data)     
-            return data?.map((item: any) => ({
-                ...item,
-                label: item.name,
-                value: item.value
-            }))
+    const { data: plansData,  isFetching: isLoadingPlans } = useQuery([userKeY], () => fetchAllPlans()) 
 
-        }
-    })  
 
-    console.log("plansOptions", plansOptions)
 
-    const GET_VALUES = getValues(); 
+    const PlanstOptions = useMemo(() => {
+        return plansData?.map((item: any) => ({
+            label: item.name,
+            value: item.id
+        }))
 
-    const { mutate: mutatePurchase, isLoading: isLoadingmutatePurchase } = useMutation(storeAdminUser, {       
+    },[plansData]) 
+
+    const { mutate: mutatePurchase, isLoading: isLoadingmutatePurchase } = useMutation(storePurchase, {       
         async onSuccess(){
             toast.messsage('200', 'Pedio criado com sucesso!')
             handleClose()
@@ -98,31 +95,20 @@ export function PurchaseModal () {
 
     
     function onSubmit(values: any){
-        console.log("values", GET_VALUES)
-        // const { 
-            // name,
-            // phone,
-            // email,
-            // password } = values
-
-        // const data = {
-        //     name
-        // }
-       
-        // mutatePurchase(data)
+        mutatePurchase(values)
     }   
 
     function onEdit(values: any) { 
         values = Object.assign({
             ...values,
-            id: state.modals.plan.id
+            id: state.modals.purchase.id
         })
         mutatePurchaseUpdate(values)
     }
 
     function handleClose(){
         actions.closeModal('purchase')
-        const valuesToReset = ['name']
+        const valuesToReset = ['name', 'price', 'plansId', 'statusPurchase']
 
         for(const value of valuesToReset){
             setValue(value, '')
@@ -145,9 +131,9 @@ export function PurchaseModal () {
                         errors={errors}
                         {...register("name")}
                         defaultValue={purchaseUser?.name}
-                        isLoading={isLoadingUser}
+                        isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
                         disabled={!!state.modals.user.id}
-                    />              
+                    />          
 
                     <Input 
                         label="Preço"
@@ -155,10 +141,20 @@ export function PurchaseModal () {
                         errors={errors}
                         {...register("price")}
                         defaultValue={formatCurrency(purchaseUser?.price)}
-                        isLoading={isLoadingUser}
+                        isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
                         disabled={!!state.modals.user.id}
-                    />  
+                    />      
 
+                    <Select 
+                        label='Planos'  
+                        defaultValue={purchaseUser?.plansId}
+                        options={PlanstOptions}
+                        isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
+                        onChange={(e) => register('plansId', {
+                            value: String(e.target.value)
+                        })}
+                        errors={errors}
+                    />
 
                     <Select 
                         label='Status'  
@@ -167,7 +163,7 @@ export function PurchaseModal () {
                             {label: "N PROGRESS", value: "N PROGRESS"},
                             {label: "DONE", value: "DONE"}
                         ]}
-                        isLoading={false}
+                        isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
                         onChange={(e) => register('statusPurchase', {
                             value: String(e.target.value)
                         })}
@@ -182,7 +178,7 @@ export function PurchaseModal () {
                                 <Button
                                     type='submit'
                                     style={{ backgroundColor: theme.colors.primary }}
-                                    disabled={isLoadingmutatePurchase}
+                                      isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
                                 >
                                     Cadastrar
                                 </Button>
@@ -192,7 +188,7 @@ export function PurchaseModal () {
                             <Button
                                 type='submit'
                                 style={{ backgroundColor: theme.colors.primary }}
-                                disabled={isLoadingmutatePurchase}
+                                  isLoading={isLoadingUser || isLoadingMutatePlanUpdate}
                             >
                                 Atualizar
                             </Button>
