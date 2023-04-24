@@ -34,6 +34,17 @@ type AlterUserStatusRequest = {
     statusId: number
 }
 
+
+export const fetchWebPlans = async() => {
+    try{
+        const { data } = await api.get('/plansweb')
+        return data as any
+    }catch(error){
+        toast.messsage('500')
+    }
+}
+
+
 export const fetchUsers = async (request: FetchUsersRequest) => {
     try{
         const { limit, page, filters } = request
@@ -259,6 +270,26 @@ export const storePurchase = async (values: any) => {
        }
     }
 }
+
+
+export const storePurchaseBuy = async (values: any) => {
+    values = {
+        ...values,
+        price: normalizePriceText(values.price)
+    }
+    try{
+        const { data } = await api.post('/purchase/buy', values)
+
+        return data
+    }catch(error: any){
+        if(error?.response?.status !== 500){
+            throw error.response.data
+       }else{
+            toast.messsage('500')
+       }
+    }
+}
+
 
 
 export const storePlans = async (values: any) => { 

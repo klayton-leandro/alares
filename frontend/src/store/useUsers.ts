@@ -2,12 +2,13 @@ import produce from 'immer'
 
 import { create } from 'zustand'
 
-type Modal = 'user' | 'plan'  | 'purchase' |'module' 
+type Modal = 'user' | 'plan'  | 'purchase'  | 'purchaseBuy' |'module' 
 
 type OpenModal = {
     modal: Modal
     title: string 
     id?: number  
+    price?: any
 }
 
 type Props = {
@@ -27,21 +28,31 @@ type Props = {
                 isOpen: boolean
                 title: string
                 id?: number
+                price?: any
             },
             plan: {
                 isOpen: boolean
                 title: string
                 id?: number
+                price?: any
             },
             purchase: {
                 isOpen: boolean
                 title: string
                 id?: number
+                price?: any
             },
+            purchaseBuy: {
+                isOpen: boolean
+                title: string
+                id?: number
+                price?: any
+            }
             module: {
                 isOpen: boolean,
                 title: string,
                 id?: number
+                price?: any
             }
         }
     },
@@ -71,19 +82,30 @@ export const useUsers = create<Props> (
             modals: {
                 user: {
                     isOpen: false,
-                    title: ''
+                    title: '',
+                    price: ''
                 },
                 plan: {
                     isOpen: false,
-                    title: ''
+                    title: '',
+                    price: ''
                 },
                 purchase: {
                     isOpen: false,
-                    title: ''
+                    title: '',
+                    price: ''
+                },
+
+                purchaseBuy: {
+                    isOpen: false,
+                    title: '',
+                    price: ''
+                    
                 },
                 module: {
                     isOpen: false,
-                    title: ''
+                    title: '',
+                    price: ''
                 }
             }
         },
@@ -121,12 +143,13 @@ export const useUsers = create<Props> (
             },
 
 
-            openModal({ modal, title, id }){
+            openModal({ modal, title, id, price }){
                 set(state => ({
                     ...produce(state, draft => {
                         draft.state.modals[modal].isOpen = true
                         draft.state.modals[modal].title = title
                         draft.state.modals[modal].id = id
+                        draft.state.modals[modal].price = price
                     })
                 }))
             },
