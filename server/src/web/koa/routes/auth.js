@@ -44,7 +44,6 @@ auth.get("/users/:id", fetchCurrentUserAction);
 auth.post("/users/create", storeCurrentUserAction);
 
 auth.get("/purchases", fetchPurchasesCurrentUserAction);
-auth.post("/purchase/create", PurchaseStoreCurrentAction);
 auth.put("/purchase", updatePurchaseStatuses);
 auth.get("/purchases/:id", PurchaseCurrentAction);
 auth.delete("/purchases/:id", PurchaseTrashCurrentAction);

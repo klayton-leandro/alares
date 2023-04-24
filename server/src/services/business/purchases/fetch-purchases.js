@@ -8,7 +8,7 @@ async function fetchPurchases(currentUserId, purchaseId, transaction) {
 		.whereNull("deletedAt")
 		.first();
 
-	return Object.assign(purchase);
+	return Object.assign(purchase ? purchase : []);
 }
 
 export default fetchPurchases;

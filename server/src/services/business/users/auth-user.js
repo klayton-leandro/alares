@@ -19,7 +19,7 @@ async function authUser(currentUserId, data, transaction) {
         return {error: "E-mail ou senha incorretos"}
     }
 
-    const token = jwt.sign({ id: user.id, name: user.name }, KNEX_KEY_SECRET_DEV);      
+    const token = jwt.sign({ id: user?.id, name: user.name }, KNEX_KEY_SECRET_DEV);      
 
 
     const userData = 
