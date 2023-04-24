@@ -1,9 +1,10 @@
 import purchaseTable from "./tables/purchases.js";
 
-async function fetchPurchases(currentUserId, userId, transaction) {  
+async function fetchPurchases(currentUserId, purchaseId, transaction) {  
 	
 	const purchase = await purchaseTable(transaction)
-		.where("userId", userId)
+		.where("id", purchaseId)
+		.where("userId", currentUserId)
 		.whereNull("deletedAt")
 		.first();
 

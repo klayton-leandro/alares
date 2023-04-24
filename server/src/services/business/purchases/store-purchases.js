@@ -4,10 +4,17 @@ import updatedAt from "../utils/assign/updated-at.js";
 import purchase from "./tables/purchases.js";
 import fetchPurchases from "./fetch-purchases.js";
 
-async function storePurchase(currentUserId, data, transaction) {
+const APPLICATION = 1;
+
+async function storePurchase(currentUserId, data, transaction) {    
+
+    if(!currentUserId) { 
+        currentUserId = APPLICATION;
+    }
 
     const PurchaseData = Object.assign(
         data,
+        {userId: currentUserId},
 		createdAt(),
 		updatedAt()
 	);

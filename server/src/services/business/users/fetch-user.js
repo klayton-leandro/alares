@@ -1,6 +1,6 @@
 import users from "./tables/users.js";
 
-async function fetchUser(currentUserId, userId, transaction) {  
+async function fetchUser(currentUserId, transaction) {  
 	
 	const user = await users(transaction)
 		.join('roles', 'roles.id', 'users.roleId')
@@ -8,7 +8,7 @@ async function fetchUser(currentUserId, userId, transaction) {
 			'users.*',
 			'roles.name as role',
 		)
-		.where("users.id", userId)
+		.where("users.id", currentUserId)
 		.whereNull("users.deletedAt")
 		.first();
 

@@ -9,6 +9,7 @@ export async function up(knex) {
 		table.decimal("price", 12, 2);
 		table.integer("userId").unsigned().references("users.id")
 		table.integer("plansId").unsigned().references("plans.id");
+		table.string("statusPurchase").defaultTo("N PROGRESS");
 		table.datetime("createdAt").defaultTo(knex.fn.now());
 		table.datetime("updatedAt").defaultTo(knex.fn.now());
 		table.datetime("deletedAt");

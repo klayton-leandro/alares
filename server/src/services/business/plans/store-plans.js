@@ -7,12 +7,13 @@ async function storePlans(currentUserId, data, transaction) {
 
     const PlansData = Object.assign(
         data,
+        {userId: currentUserId},
 		createdAt(),
 		updatedAt()
 	);
 
-    await plans(transaction).insert(PlansData)
-    return await fetchPlans(currentUserId, PlansData.userId, transaction);
+    const [planId] =  await plans(transaction).insert(PlansData)
+    return await fetchPlans(currentUserId, planId, transaction);
 
 }
 
