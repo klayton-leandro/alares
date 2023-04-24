@@ -19,8 +19,8 @@ async function storePurchase(currentUserId, data, transaction) {
 		updatedAt()
 	);
 
-    await purchase(transaction).insert(PurchaseData)
-    return await fetchPurchases(currentUserId, PurchaseData.userId, transaction);
+    const [purchaseID] = await purchase(transaction).insert(PurchaseData)
+    return await fetchPurchases(currentUserId, purchaseID, transaction);
 
 }
 

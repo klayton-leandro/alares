@@ -3,8 +3,8 @@ import purchases from "./tables/purchases.js";
 async function fetchAllPurchases(currentUserId, filters, transaction) {
 
 	const query = purchases(transaction)
-        .join("users", "users.id", "purchase.userId")
-        .join("plans", "plans.userId", "purchase.userId")
+        .join("users", "purchase.userId", "=", "users.id")
+        .join("plans", "purchase.plansId", "=", "plans.id")
         .select(
             'purchase.id',
             'purchase.price',
@@ -14,7 +14,8 @@ async function fetchAllPurchases(currentUserId, filters, transaction) {
             'users.name as name',       
         )
 		.whereNull("purchase.deletedAt")
-		.orderBy('purchase.name');
+		.orderBy('purchase.name')
+		.distinct();
 	
 	if(filters?.name){
 		query.whereRaw('LOWER(purchase.name) LIKE ?', '%'+filters?.name.toLowerCase()+'%')

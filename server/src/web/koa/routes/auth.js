@@ -10,6 +10,7 @@ import {
 import { 
     PurchaseCurrentAction,
     PurchaseStoreCurrentAction, 
+    PurchaseTrashCurrentAction, 
     fetchPurchasesCurrentUserAction, 
     updatePurchaseStatuses
 } from "../controllers/purchase-controller.js";
@@ -38,6 +39,7 @@ auth.delete('/plans/:id', PlansTrashCurrentAction);
 auth.put('/plans', updatePlansCurrentAction);
 
 auth.get("/users", fetchUsersCurrentUserAction);
+auth.get("/users/me", fetchCurrentUserAction);
 auth.get("/users/:id", fetchCurrentUserAction);
 auth.post("/users/create", storeCurrentUserAction);
 
@@ -45,6 +47,6 @@ auth.get("/purchases", fetchPurchasesCurrentUserAction);
 auth.post("/purchase/create", PurchaseStoreCurrentAction);
 auth.put("/purchase", updatePurchaseStatuses);
 auth.get("/purchases/:id", PurchaseCurrentAction);
-auth.get("/users/me", fetchCurrentUserAction);
+auth.delete("/purchases/:id", PurchaseTrashCurrentAction);
 
 export default auth;

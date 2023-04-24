@@ -1,6 +1,7 @@
 import fetchAllPurchases from "../../../services/business/purchases/fetch-all-puchases.js";
 import fetchPurchases from "../../../services/business/purchases/fetch-purchases.js";
 import storePurchase from "../../../services/business/purchases/store-purchases.js";
+import trashPurchases from "../../../services/business/purchases/trash-purchases.js";
 import updatePurchases from "../../../services/business/purchases/update-purchases.js";
 
 /**
@@ -32,4 +33,11 @@ export async function PurchaseCurrentAction(ctx) {
 	const { transaction, user } = ctx.state;
 	const { id } = ctx.request.params
 	ctx.response.body = await fetchPurchases(user.id, id, transaction);
+}
+
+
+export async function PurchaseTrashCurrentAction(ctx) {
+	const { transaction, user } = ctx.state;
+	const { id } = ctx.request.params
+	ctx.response.body = await trashPurchases(user.id, id, transaction);
 }
