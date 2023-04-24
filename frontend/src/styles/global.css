@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Hairline.otf);
+    font-weight: 100;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Thin.otf);
+    font-weight: 200;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Light.otf);
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Regular.otf);
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Book.otf);
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Medium.otf);
+    font-weight: 600;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Bold.otf);
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'Mark Pro';
+    src: url(font/Mark-Pro-Heavy.otf);
+    font-weight: 800;
+  }
+  
